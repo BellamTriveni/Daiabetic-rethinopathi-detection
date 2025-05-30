@@ -1,0 +1,294 @@
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.svm import SVC
+from sklearn.linear_model import LogisticRegression
+from sklearn.neighbors import  KNeighborsClassifier
+from sklearn.metrics import accuracy_score
+a = pd.read_csv('/content/biabetes.csv')
+a = a.drop_duplicates()
+a = a.fillna(0)
+X = a.drop('Outcome', axis=1)
+y = a['Outcome']
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Decision Tree Classifier
+dtree = DecisionTreeClassifier()
+dtree.fit(X_train, y_train)
+y_pred_dtree = dtree.predict(X_test)
+accuracy_dtree = accuracy_score(y_test, y_pred_dtree)
+print("Decision Tree Accuracy:", accuracy_dtree)
+
+# Random Forest Classifier
+rforest = RandomForestClassifier(n_estimators=100, random_state=42)
+rforest.fit(X_train, y_train)
+y_pred_rforest = rforest.predict(X_test)
+accuracy_rforest = accuracy_score(y_test, y_pred_rforest)
+print("Random Forest Accuracy:", accuracy_rforest)
+
+# SVM Classifier
+svm_model = SVC()
+svm_model.fit(X_train, y_train)
+y_pred_svm = svm_model.predict(X_test)
+accuracy_svm = accuracy_score(y_test, y_pred_svm)
+print("SVM Accuracy:", accuracy_svm)
+
+# Logistic Regression
+logistic_model = LogisticRegression()
+logistic_model.fit(X_train, y_train)
+y_pred_logistic = logistic_model.predict(X_test)
+accuracy_logistic = accuracy_score(y_test, y_pred_logistic)
+print("Logistic Regression Accuracy:", accuracy_logistic)
+
+# K-nearest neighbors (KNN)
+k = 14  # You can adjust this value
+knn = KNeighborsClassifier(n_neighbors=k)
+knn.fit(X_train, y_train)
+y_pred_knn = knn.predict(X_test)
+accuracy_knn = accuracy_score(y_test, y_pred_knn)
+print(f'KNN Accuracy: {accuracy_knn:.4f}')
+
+print(a.isnull())
+a=a.fillna(0)
+
+data_types=a.dtypes
+print(data_types)
+
+
+
+a.head()
+
+a.shape
+
+a.columns
+
+a.describe()
+
+a=a.drop_duplicates()
+a.isnull().sum()
+import pandas as pd
+zero_counts = pd.DataFrame(columns=['Count'])
+zero_counts['Count'] = a.eq(0).sum()
+print(zero_counts)
+import matplotlib.pyplot as plt
+a.hist(bins=10, figsize=(10,10))
+plt.show()
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+corrmat = a.corr()
+plt.figure(figsize=(10, 8))
+sns.heatmap(corrmat, annot=True, cmap="YlGnBu")
+plt.show()
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+a=pd.read_csv('/content/biabetes.csv')
+y=a["Outcome"]
+print(y)
+x=a.drop("Outcome", axis=1)
+print(x)
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score, confusion_matrix
+import seaborn as sns
+X_train, X_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=42)
+print("X_train shape:", X_train.shape)
+print("y_train shape:", y_train.shape)
+print("X_test shape:", X_test.shape)
+print("y_test shape:", y_test.shape)
+print(X_test.shape, y_test.shape)
+from sklearn import linear_model
+
+logreg = linear_model.LogisticRegression(random_state=42, max_iter=200)
+test_accuracy = logreg.fit(X_train, y_train).score(X_test, y_test)
+train_accuracy = logreg.fit(X_train, y_train).score(X_train, y_train)
+print("Test Accuracy: {} ".format(test_accuracy))
+print("Train Accuracy: {} ".format(train_accuracy))
+from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
+from sklearn.metrics import accuracy_score, confusion_matrix
+import seaborn as sns
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+x_train, x_test, y_train, y_test = train_test_split(x,y,test_size=0.2,random_state=42)
+model = LogisticRegression()
+model.fit(x_train, y_train)
+y_pred = model.predict(x_test)
+accuracy = accuracy_score(y_test, y_pred)
+print("Accuracy:", accuracy)
+class_report = classification_report(y_test, y_pred)
+print("Classification Report:\n", class_report)
+import matplotlib.pyplot as plt
+conf_matrix = confusion_matrix(y_test, y_pred)
+plt.figure(figsize=(4,3))
+sns.heatmap(conf_matrix, annot=True, fmt='g', cmap='Blues',
+            xticklabels=['No Diabetes', 'Diabetes'],
+            yticklabels=['No Diabetes', 'Diabetes'])
+plt.xlabel('Actual')
+plt.ylabel('Predicted')
+plt.title('Confusion Matrix')
+plt.show()
+plt.figure(figsize=(8,6))
+plt.bar(['Logistic Regression'], [accuracy], color='b', alpha=0.7)
+plt.ylabel('Accuracy')
+plt.title('Model Accuracy Comparison')
+plt.ylim(0, 1)
+plt.show()
+from sklearn.model_selection import RepeatedStratifiedKFold
+from sklearn.model_selection import GridSearchCV
+from sklearn.svm import SVC
+from sklearn.metrics import classification_report,confusion_matrix
+from sklearn.metrics import f1_score, precision_score, recall_score
+model = SVC()
+kernel = ['poly', 'rbf', 'sigmoid']
+C = [50, 10, 1.0, 0.1, 0.01]
+gamma = ['scale']
+grid = dict(kernel=kernel,C=C,gamma=gamma)
+cv = RepeatedStratifiedKFold(n_splits=10, n_repeats=3, random_state=1)
+grid_search = GridSearchCV(estimator=model, param_grid=grid, n_jobs=-1, cv=cv, scoring='f1',error_score=0)
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+a=pd.read_csv('/content/biabetes.csv')
+y=a["Outcome"]
+print(y)
+x=a.drop("Outcome", axis=1)
+print(x)
+grid_result = grid_search.fit(x, y)
+
+
+
+svm_pred=grid_result.predict(x_test)
+print("Classification Report is:\n",classification_report(y_test,svm_pred))
+from sklearn.metrics import classification_report
+
+# Assuming you have trained your KNeighborsClassifier model
+model = KNeighborsClassifier()
+model.fit(x_train, y_train)
+y_pred = model.predict(x_test)  # Predictions from KNN model
+
+# Print classification report using KNN predictions
+print("Classification Report for KNeighborsClassifier is:\n",
+      classification_report(y_test, y_pred))
+results = pd.DataFrame(grid_search.cv_results_)
+pivot_results = results.pivot(index='param_C', columns='param_kernel', values='mean_test_score')
+plt.figure(figsize=(10, 6))
+sns.heatmap(pivot_results, annot=True, cmap='YlGnBu', cbar=True, fmt=".3f")
+plt.xlabel('Kernel')
+plt.ylabel('C')
+plt.title('Grid Search Mean F1 Score')
+plt.show()
+best_params = grid_search.best_params_
+best_score = grid_search.best_score_
+print("Best Parameters: ", best_params)
+print("Best F1 Score: {:.2f}".format(best_score))
+from sklearn.metrics import classification_report
+
+# Assuming you have trained your Random Forest model
+model = RandomForestClassifier()
+model.fit(x_train, y_train)
+y_pred = model.predict(x_test)  # Predictions from Random Forest model
+
+# Print classification report using Random Forest predictions
+print("Classification Report for Random Forest is:\n",
+      classification_report(y_test, y_pred))
+
+import pandas as pd
+import numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import Perceptron
+from sklearn.metrics import accuracy_score
+a=pd.read_csv('/content/biabetes.csv')
+y=a["Outcome"]
+X=a.drop("Outcome", axis=1)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+scaler = StandardScaler()
+X_train = scaler.fit_transform(X_train)
+X_test = scaler.transform(X_test)
+perceptron = Perceptron(max_iter=1000, random_state=42)
+perceptron.fit(X_train, y_train)
+y_pred = perceptron.predict(X_test)
+accuracy = accuracy_score(y_test, y_pred)
+print(accuracy)
+
+import seaborn as sns
+from sklearn.metrics import confusion_matrix
+conf_matrix = confusion_matrix(y_test, y_pred)
+plt.figure(figsize=(8, 6))
+sns.heatmap(conf_matrix, annot=True, fmt='g', cmap='Blues',
+            xticklabels=['No Diabetes', 'Diabetes'],
+            yticklabels=['No Diabetes', 'Diabetes'])
+plt.xlabel('Actual')
+plt.ylabel('Predicted')
+plt.title('Confusion Matrix')
+plt.show()
+import numpy as np
+import pandas as pd
+from sklearn.preprocessing import StandardScaler
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import accuracy_score
+from sklearn.model_selection import train_test_split
+from sklearn.model_selection import cross_val_score
+import matplotlib.pyplot as plt
+a=pd.read_csv('/content/biabetes.csv')
+y=a["Outcome"]
+x=a.drop("Outcome", axis=1)
+x_train, x_test, y_train, y_test = train_test_split(x,y,test_size=0.2,random_state=42)
+accuracy_scores = []
+k_values = list(range(1, 21))
+for k in k_values:
+    knn_classifier = KNeighborsClassifier(n_neighbors=k)
+    scores = cross_val_score(knn_classifier, x, y, cv=5, scoring='accuracy')
+    mean_accuracy = scores.mean()
+    accuracy_scores.append(mean_accuracy)
+max=np.max(accuracy_scores)
+for k, accuracy in zip(k_values, accuracy_scores):
+    print(f'k={k}, Accuracy={accuracy:.4f}')
+
+plt.figure(figsize=(10, 6))
+plt.plot(k_values, accuracy_scores, marker='o', linestyle='-', color='r')
+plt.title('Accuracy vs. Number of Neighbors (K)')
+plt.xlabel('Number of Neighbors (K)')
+plt.ylabel('Accuracy')
+plt.xticks(np.arange(2, 21, step=1))
+plt.grid(True)
+plt.show()
+print("highest accuracy:",max)
+from sklearn.decomposition import PCA
+pca=PCA(5)
+x1=pca.fit_transform(x)
+print(x1)
+
+from sklearn.metrics import accuracy_score, confusion_matrix
+import seaborn as sns
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+x1_train, x1_test, y_train, y_test = train_test_split(x1,y,test_size=0.2,random_state=42)
+
+
+
+model = LogisticRegression()
+model.fit(x1_train, y_train)
+y_pred = model.predict(x1_test)
+accuracy = accuracy_score(y_test, y_pred)
+print("Accuracy:", accuracy)
+from sklearn.svm import SVC
+svm_classifier = SVC(kernel='linear')
+svm_classifier.fit(x1_train, y_train)
+from sklearn.metrics import accuracy_score
+y_pred = svm_classifier.predict(x1_test)
+accuracy = accuracy_score(y_test, y_pred)
+print(f"Accuracy: {accuracy}")
+from sklearn.preprocessing import StandardScaler
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import accuracy_score
+k = 14
+knn = KNeighborsClassifier(n_neighbors=k)
+knn.fit(x1_train, y_train)
+y_pred = knn.predict(x1_test)
+accuracy = accuracy_score(y_test, y_pred)
+print(f'Accuracy: {accuracy * 100:.2f}%')
